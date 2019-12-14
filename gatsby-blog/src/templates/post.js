@@ -11,8 +11,8 @@ const PostTemplate = ({ data }) => {
       { label: "Title", name: "title", component: "text" },
       { label: "Body", name: "body", component: "textarea" },
     ],
-    onSubmit() {
-      //
+    onSubmit(data) {
+      return updatePost(data)
     },
   })
 
@@ -22,6 +22,18 @@ const PostTemplate = ({ data }) => {
       <p>{strapiPost.body}</p>
     </Layout>
   )
+}
+
+function updatePost(strapiPost) {
+  return fetch(`http://localhost:1337/posts/${strapiPost.strapiId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify(strapiPost),
+  }).catch(e => {
+    console.error(e)
+  })
 }
 
 export default PostTemplate
