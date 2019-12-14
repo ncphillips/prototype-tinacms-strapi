@@ -1,6 +1,7 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
 import Layout from "../components/layout"
+import { withPlugins } from "tinacms"
 
 const IndexPage = ({ data }) => (
   <Layout>
@@ -21,7 +22,29 @@ const IndexPage = ({ data }) => (
   </Layout>
 )
 
-export default IndexPage
+const StrapiPostCreatorPlugin = {
+  __type: "content-creator",
+  name: "Post",
+  fields: [
+    { label: "Title", name: "title", component: "text" },
+    { label: "Description", name: "description", component: "textarea" },
+  ],
+  onSubmit(data) {
+    return fetch(`http://localhost:1337/posts/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        title: data.title,
+        description: data.description,
+        body: "",
+      }),
+    })
+  },
+}
+
+export default withPlugins(IndexPage, StrapiPostCreatorPlugin)
 
 export const pageQuery = graphql`
   query IndexQuery {
