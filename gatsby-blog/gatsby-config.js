@@ -8,6 +8,9 @@ module.exports = {
     {
       resolve: "gatsby-plugin-tinacms",
       options: {
+        sidebar: {
+          position: "displace",
+        },
         plugins: [
           //
         ],
